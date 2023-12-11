@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.ExploreRendering", "Blazor.ExploreRendering\Blazor.ExploreRendering\Blazor.ExploreRendering.csproj", "{C02FF3CB-C34B-422A-8612-0613EBED8877}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.ExploreRendering.Client", "Blazor.ExploreRendering\Blazor.ExploreRendering.Client\Blazor.ExploreRendering.Client.csproj", "{0BE093FC-B48A-4000-90D5-D303DEBD41CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C02FF3CB-C34B-422A-8612-0613EBED8877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02FF3CB-C34B-422A-8612-0613EBED8877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02FF3CB-C34B-422A-8612-0613EBED8877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02FF3CB-C34B-422A-8612-0613EBED8877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE093FC-B48A-4000-90D5-D303DEBD41CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE093FC-B48A-4000-90D5-D303DEBD41CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE093FC-B48A-4000-90D5-D303DEBD41CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE093FC-B48A-4000-90D5-D303DEBD41CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18BE1D68-32C9-4FA1-9048-60A1B95C5C08}
+	EndGlobalSection
+EndGlobal
