@@ -7,10 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Layout\MainLayout.razor" />
+    <Content Remove="Components\Layout\NavMenu.razor" />
+    <Content Remove="Components\Pages\Home.razor" />
+    <Content Remove="Components\Pages\Home2.razor" />
+    <Content Remove="Components\Routes.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Components\Layout\MainLayout.razor.css" />
+    <None Remove="Components\Layout\NavMenu.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blazor.ExploreRendering.Client\Blazor.ExploreRendering.Client.csproj" />
     <PackageReference Include="Blazr.RenderLogger" Version="0.1.0" />
     <PackageReference Include="Blazr.RenderLogger.Server" Version="0.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Layout\" />
   </ItemGroup>
 
 </Project>

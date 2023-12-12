@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.ExploreRendering", "Blazor.ExploreRendering\Blazor.ExploreRendering\Blazor.ExploreRendering.csproj", "{C02FF3CB-C34B-422A-8612-0613EBED8877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.ExploreRendering", "Blazor.ExploreRendering\Blazor.ExploreRendering\Blazor.ExploreRendering.csproj", "{C02FF3CB-C34B-422A-8612-0613EBED8877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.ExploreRendering.Client", "Blazor.ExploreRendering\Blazor.ExploreRendering.Client\Blazor.ExploreRendering.Client.csproj", "{0BE093FC-B48A-4000-90D5-D303DEBD41CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.ExploreRendering.Client", "Blazor.ExploreRendering\Blazor.ExploreRendering.Client\Blazor.ExploreRendering.Client.csproj", "{0BE093FC-B48A-4000-90D5-D303DEBD41CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{AC3BDD8B-317D-41E0-BADA-1D277CFDD7F9}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
