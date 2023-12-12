@@ -2,6 +2,7 @@
 @using Blazor.Core.CQS;
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @inject IListRequestHandler<WeatherForecast> ListHandler
+@inject IRenderStateService RenderState
 
 <PageTitle>Weather</PageTitle>
 
@@ -9,26 +10,33 @@
 
 <p>This component demonstrates showing data.</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <Virtualize Context="forecast" ItemsProvider="this.GetRowsAsync">
+@if(this.RenderState.IsPreRender)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
             </tr>
-        </Virtualize>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <Virtualize Context="forecast" ItemsProvider="this.GetRowsAsync">
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}
 
 @code {
 

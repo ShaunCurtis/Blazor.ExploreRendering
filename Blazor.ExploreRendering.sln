@@ -29,6 +29,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Configuration", "An-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Configuration.WASM", "An-InterActive-Data-Pipeline\Blazor.Configuration.WASM\Blazor.Configuration.WASM.csproj", "{22A20800-D8FE-4613-8AA7-77CC88FB164A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Where Should I put My Components", "Where Should I put My Components", "{52780620-FC99-4D3E-98D6-7AC7135C5171}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor", "Where-Do-I-Put-Components\Blazor\Blazor.csproj", "{48720462-DB12-4A4A-A023-1707C3231817}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Client", "Where-Do-I-Put-Components\Blazor.Client\Blazor.Client.csproj", "{D7927005-7965-46C6-983B-CA6E63E493E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +73,14 @@ Global
 		{22A20800-D8FE-4613-8AA7-77CC88FB164A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A20800-D8FE-4613-8AA7-77CC88FB164A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A20800-D8FE-4613-8AA7-77CC88FB164A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48720462-DB12-4A4A-A023-1707C3231817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48720462-DB12-4A4A-A023-1707C3231817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48720462-DB12-4A4A-A023-1707C3231817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48720462-DB12-4A4A-A023-1707C3231817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7927005-7965-46C6-983B-CA6E63E493E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7927005-7965-46C6-983B-CA6E63E493E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7927005-7965-46C6-983B-CA6E63E493E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7927005-7965-46C6-983B-CA6E63E493E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +94,8 @@ Global
 		{05CB58F7-F997-4B3B-80E4-E9091A1723BB} = {E88261EC-A1A3-4388-B16D-C8E0B5D81033}
 		{E35F9EB6-1317-444A-94FD-353AA5412FC7} = {E88261EC-A1A3-4388-B16D-C8E0B5D81033}
 		{22A20800-D8FE-4613-8AA7-77CC88FB164A} = {E88261EC-A1A3-4388-B16D-C8E0B5D81033}
+		{48720462-DB12-4A4A-A023-1707C3231817} = {52780620-FC99-4D3E-98D6-7AC7135C5171}
+		{D7927005-7965-46C6-983B-CA6E63E493E9} = {52780620-FC99-4D3E-98D6-7AC7135C5171}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18BE1D68-32C9-4FA1-9048-60A1B95C5C08}

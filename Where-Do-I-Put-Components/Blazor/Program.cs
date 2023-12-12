@@ -1,5 +1,5 @@
-using Blazor.ExploreRendering.Client.Pages;
-using Blazor.ExploreRendering.Components;
+using Blazor.Client.Pages;
+using Blazor.Components;
 using Blazr.RenderLogger.Server;
 using System.ComponentModel;
 

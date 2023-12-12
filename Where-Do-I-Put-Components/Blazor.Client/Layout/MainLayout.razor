@@ -1,5 +1,5 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -11,6 +11,8 @@
         </div>
 
         <article class="content px-4">
+            <RenderStateViewer @rendermode="InteractiveAuto" />
+            <RenderStateViewer Parent="this" />
             @Body
         </article>
     </main>
@@ -21,3 +23,6 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+}

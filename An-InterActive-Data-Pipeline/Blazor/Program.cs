@@ -1,5 +1,6 @@
 using Blazor.Client.Pages;
 using Blazor.Components;
+using Blazor.Configuration;
 using Blazr.RenderLogger.Server;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.AddRenderStateServerServices();
+builder.AddAppServerServices();
 
 var app = builder.Build();
 
@@ -29,6 +31,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.AddAppAPIEndpoints();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
