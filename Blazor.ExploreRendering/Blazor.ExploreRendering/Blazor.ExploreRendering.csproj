@@ -21,8 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blazor.ExploreRendering.Client\Blazor.ExploreRendering.Client.csproj" />
-    <PackageReference Include="Blazr.RenderLogger" Version="0.1.0" />
-    <PackageReference Include="Blazr.RenderLogger.Server" Version="0.1.1" />
+    <PackageReference Include="Blazr.RenderLogger" Version="0.1.2" />
+    <PackageReference Include="Blazr.RenderLogger.Server" Version="0.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
   </ItemGroup>
 

@@ -3,7 +3,7 @@
 
 <PageTitle>Counter</PageTitle>
 
-<RenderStateViewer />
+<RenderStateViewer Parent="this" />
 
 <h1>Counter</h1>
 
@@ -19,8 +19,8 @@
         currentCount++;
     }
 
-    protected override void OnInitialized()
-    {
-        Console.WriteLine($"Counter Initialized");
-    }
+    // protected override void OnInitialized()
+    // {
+    //     Console.WriteLine($"Counter Initialized");
+    // }
 }

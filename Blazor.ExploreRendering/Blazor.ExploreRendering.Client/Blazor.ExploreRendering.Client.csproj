@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazr.RenderLogger" Version="0.1.0" />
-    <PackageReference Include="Blazr.RenderLogger.WASM" Version="0.1.1" />
+    <PackageReference Include="Blazr.RenderLogger" Version="0.1.2" />
+    <PackageReference Include="Blazr.RenderLogger.WASM" Version="0.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
   </ItemGroup>
 

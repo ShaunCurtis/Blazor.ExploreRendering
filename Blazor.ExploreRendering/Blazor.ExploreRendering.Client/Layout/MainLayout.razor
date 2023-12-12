@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -11,7 +10,7 @@
         </div>
 
         <article class="content px-4">
-            <RenderStateViewer />
+            <RenderStateViewer Parent="this" />
             @Body
         </article>
     </main>
