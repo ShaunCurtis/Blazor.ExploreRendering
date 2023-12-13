@@ -9,3 +9,5 @@ What looked like a good idea at the time may turn into a minefield of borken dre
 Articles so Far:
 
 1. [Going For Broke](./Documents/Going-For-Broke.md) - Everyone's favourite seems to be the biggest minefield of all *AutoInteractive* and *Per Page/Component*.
+
+2. [An Interactive Data Pipeline](./Documents/An-Interactive-Data-Pipeline.md) - demonstrates how to build a data pipleine that can be used in both Server and Client Side Contexts.
