@@ -150,7 +150,7 @@ Switch back to `Home` and then back to `Counter` and you're back in ASSR.
 
 I'll add some more detail as I do more work on this.
 
-## My Peronal Initial Conclusions ans Observations
+## My Personal Initial Conclusions and Observations
 
 > Note these are personal views and opinions.
 
