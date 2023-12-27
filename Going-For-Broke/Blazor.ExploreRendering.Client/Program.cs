@@ -1,8 +1,8 @@
-using Blazr.RenderLogger.WASM;
+using Blazr.RenderState.WASM;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.AddRenderStateWASMServices();
+builder.AddBlazrRenderStateWASMServices();
 
 await builder.Build().RunAsync();

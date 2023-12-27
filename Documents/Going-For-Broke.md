@@ -2,14 +2,9 @@
 
 > This is an early draft.  I've made it available as there are lots of questions on Stack Overflow and other forums on the topic.
 
-Everyone's favourite seems to be *AutoInteractive* and *Per Page/Component*.  Lets have the full works, so we'll basr this discussion on a solution built using that template.
+Everyone's favourite seems to be *AutoInteractive* and *Per Page/Component*.  The full works, freedom to choose.
 
-Create a solution using the *Blazor Web Project* with those settings.
-
-You get two projects: 
-
-1. The Web Server/Interactive Server project.
-1. The Client project containing the Web Assembly project.
+In this article I'll take a look at how this template option works, discuss  design and deployment issues and explain what I believe are the only two use cases for choosing this *modus operandi*.
 
 A word on acronyms and terminology.  I'll talk about three modes of rendering:
 
@@ -19,42 +14,56 @@ A word on acronyms and terminology.  I'll talk about three modes of rendering:
 
 I'll use the acronyms through the rest of this article.
 
-### Adding the RenderLogger to the Solution
+## Create a Solution
 
-*RenderLogger* is a Nuget package that provides some infrastructure to log and display the render mode of components.  See [Blazr.RenderLogger Repo on GitHub](https://github.com/ShaunCurtis/Blazr.RenderLogger)
+Create a solution using the *Blazor Web Project* with those settings.
+
+You get two projects: 
+
+1. The Web Server/Interactive Server project.
+1. The Client project containing the Web Assembly project.
+
+Both of these are deployment projects: they create a deployable solution.
+
+
+### Adding the RenderState to the Solution
+
+*RenderState* is a Nuget package that provides some infrastructure to log and display the render mode of components.  See [Blazr.RenderState Repo on GitHub](https://github.com/ShaunCurtis/Blazr.RenderState)
 
 Add the following Nuget packages to the projects:
 
 Web Server :
 
 ```xml
-<PackageReference Include="Blazr.RenderLogger" Version="0.1.2" />
-<PackageReference Include="Blazr.RenderLogger.Server" Version="0.1.2" />
-```
+   <PackageReference Include="Blazr.RenderState.Server" Version="0.9.1" />
+ ```
 
 Client :
 
 ```xml
-<PackageReference Include="Blazr.RenderLogger" Version="0.1.2" />
-<PackageReference Include="Blazr.RenderLogger.WASM" Version="0.1.2" />
-```
+   <PackageReference Include="Blazr.RenderState.WASM" Version="0.9.1" />
+ ```
 
 Add the following services to the Server `Program`:
 
 ```csharp
-builder.AddRenderStateServerServices();
+using Blazr.RenderState.Server;
+//...
+builder.AddBlazrRenderStateServerServices();
 ```
 
 And the following services to the Client `Program`:
 
 ```csharp
-builder.AddRenderStateWASMServices();
+using Blazr.RenderState.WASM;
+//...
+builder.AddBlazrRenderStateWASMServices();
 ```
 
 And add the following `using` to both project's `_Imports.razor`.
 
 ```csharp
-@using Blazr.RenderLogger
+@using Blazr.RenderState
 ```
 
 ## The Pages/Components
@@ -70,44 +79,161 @@ Add the following component to `Home`, `Counter` and `Weather` below the `Page T
 //...
 ```
 
-Add it to `MainLayout`
+Add it to `MainLayout`:
 
 ```csharp
-        <article class="content px-4">
+    <main>
+        <div class="top-row px-4">
             <RenderStateViewer Parent="this" />
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
             @Body
         </article>
 ```
 
-Move `Weather` to the *Pages* folder in the *Client* project and modify it to run in interactive auto mode.
+And to `NavMenu` along with some extra navigation links:
 
 ```csharp
-@page "/weather"
-@rendermode InteractiveAuto
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Blazor.ExploreRendering</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="sssr">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> SSSR
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="assr">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> ASSR
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="csr">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> CSR
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="mongrel">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Mongrel
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="weather">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            </NavLink>
+        </div>
+        <RenderStateViewer Parent="this" />
+    </nav>
+</div>
 ```
 
-Modify `Home` to run in interactive server mode.
+Add the following pages to the *Server* project:
+
+*ASSR.razor*
 
 ```csharp
-@page "/"
+@page "/assr"
 @rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<RenderStateViewer Parent="this" />
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
 ```
+
+*SSSR.razor*
+
+```csharp
+@page "/sssr"
+
+<PageTitle>Home</PageTitle>
+
+<RenderStateViewer Parent="this" />
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+```
+
+*CSR.razor*
+
+```csharp
+@page "/CSR"
+@rendermode InteractiveWebAssembly
+
+<PageTitle>CSR</PageTitle>
+
+<RenderStateViewer Parent="this" />
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+```
+
+*Mongrel.razor*
+
+```csharp
+@page "/mongrel"
+
+<PageTitle>Home</PageTitle>
+
+<RenderStateViewer Parent="this" />
+
+<RenderStateViewer @rendermode="InteractiveAuto" Parent="this" />
+
+<RenderStateViewer @rendermode="InteractiveServer" Parent="this" />
+
+<RenderStateViewer @rendermode="InteractiveWebAssembly" Parent="this" />
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+```
+
 
 ### Run the Solution
 
 You will see this:
 
-![Home Server Rendered](./images/Home-ServerRendered.png)
+![Home Server Rendered](./../images/Home-ServerRendered.png)
 
-The three pieces of information displayed are:
+`RenderStateViewer` displays three pieces of information:
 
 ```text
 Parent Compoment Name => Unique ID of the Scoped Session Service => Render Mode of the Component
 ```
 
-The eye opener may be the render mode of the `MainLayout`.  It's SSSR.
+Everything is SSSR.  Why?  
 
-Why?  Look at `App.razor`.  The two top level components have no render mode set.  The default is SSSR, so the `Router` is a statically rendered component.
+Take alook at `App.razor`.  The two top level components have no render mode set.  They therefore use the default:  SSSR. Therefore both `Router` and  `Layout` are also statically rendered.
 
 ```csharp
 <!DOCTYPE html>
@@ -126,25 +252,68 @@ Why?  Look at `App.razor`.  The two top level components have no render mode set
 </html>
 ```
 
+Try setting the Render mode on the `MainLayout` or `RouteView`.  That generates the following rather confusing runtime exception:
+
+![Render Fragment Exception](./../images/RenderFragment-exception.png)
+
 You can't set the render mode on a Layout or the `RouteView` component within `Routes`, so you either set up at the top in `App` or you set it on the pages or lower level components.
 
-## Other Behaviours
+What that basically means is you can't set the a rendermode on a component that accepts render fragments from another component with a different rendermode.  In this case `Body` from it's statically rendered parent.  In most cases this is `ChildContent`.
 
-If you navigate to Counter you will see a full ASSR.
+Consider this simple case:
 
-![Counter Auto Rendered](./images/Counter-AutoRendered.png).
+```csharp
+\\no render mode set so inherits SSSR
 
-Note that you have two service IDs.  The ASSR ID is the same as `Home`.  There's a Hub session running maintaining the Scoped services for the duration of the SPA session. The `Layout` Id has changed as would be expected for classic SSSR: scoped services only exist for the period of the Http request.
+<MyDiv @rendermode="InteractiveServer">
+    @_helloWorld
+</MyDiv>
+@code
+{
+    private string _helloWorld = "Hello Blazor";
+}
+```
 
-Also note that although the render mode is `InteractiveAuto`, `Counter` was rendered as ASSR.
+`@_helloWorld` is a render fragment passed to `MyDiv` as the `ChildContent` Parameter.  But the parent is statically rendered so when the Blazor tries to render `MyDiv` interactively, `ChildContent` doesn't exist.  There's no `RenderFragment` `delegate` to pass.  Bang!
 
-Navigate to `Weather`.  There's a jerkiness to the display as it switches modes.  And it still stays in ASSR.
+## Behaviours
 
-Why hasn't the application switched to WASM CSR.  Out initial component was `Home` which was set to `InteractiveServer`, so the application has remained on that mode.
+Switch between components and noting the render modes and the Id's of the Scoped conponent.  You will find various combinations that confuse.  I'll look at a few and explain.
 
-On the `Weather` page, hit `F5`.  Watch the component statically render and then switch to CSR when the WASM code has downloaded.  Now switch back to `Counter` you'll find it's also now in CSR mode.
+### Everything causes a full page refresh
 
-Switch back to `Home` and then back to `Counter` and you're back in ASSR.
+`App`, `Route`, `Router`, `MainLayout` are all SSSR, so that's obvious once you analyse it properly.  The router runs on the server so it can make the correct decision how to render the commponent tree.
+
+It's interesting to note that although you make a trip to the server to route between two client side pages, CSR => Counter for example, the client side Blazor session is maintained
+
+### Different Components have different Scoped Session instances
+
+Go to *Mongrel* and note the different Service Id's.
+
+ - The *Pre-Rendered* SSSR components all have the same ID.  This is the scoped service that was created for the Http Request.  This instance, and it's scoped container, no longer exist.
+ - The SSR service is alive in the Blazor Hub session running on the server.  This has a scope of the SPA session.  All SSR components will share this service instance.
+ - The CSR service is alive in the Blazor SPA session running in the Web Assembly container on the Browser.  This is a different instance from the SSR instance.
+ - The Auto component has rendered as CSR, so has the CST service instance.
+
+Consider how this complicates designing an application.  How does a ASSR render component and a CSR component raise and receive event notifications?  How do they share data? 
+
+### InteractiveAuto Pages don't always render in the same mode
+
+Go to *Home* and then to *Counter*.  *Counter* renders in CSR mode with the CSR service instance.
+
+No go to *ASSR* and then back to *Counter*.  It's noe registered in ASSR mode and is using the Blazor Hub service instance.
+
+Consider saving the state of the counter in a service.  You get different states depending on the render mode.
+
+## This isn't a Single Page Application
+
+Blazor was conceived as a Singkle Page Application, running either in a Server Hub environment or in a Web Assembly environment in the Browser.  One Http request trip to the server to get the page, a few trips to get resources and the Application is up and running in the browser.  No more Http requests.
+
+This hybrid mode is not that.  The Router runs on the server.  Every page request is a Http request to the server.  The layout is statically rendered.
+
+Basically a static server rendered application on steriods.  What Microsoft have been trying to deliver for it's Asp.Net, Razor, MVC customer base for years!
+
+If you want old Blazor [seems quite a strange statement to make for a new technology], choose one of the pure modes with `Global` interactivity.
 
 ## More to Come
 
@@ -154,9 +323,18 @@ I'll add some more detail as I do more work on this.
 
 > Note these are personal views and opinions.
 
-My gut feeling is that using **Per Page/Component** mode is not hybrid, it's mongrel.  Most people who came to old Blazor struggled with the component concept and were confused with the lifecycle and events.  Throwing in render modes adds another level of complexity. I can see so many scenarios where components are talking to the wrong instances or types of services.  Throw `Auto` to the mix and the complexity spirals out of control.  Think of the exotic concoctions people will come up!
+My gut feeling is that using **Per Page/Component** mode is not hybrid, it's mongrel: hense the title of the article.
 
-So my recommendation is go with either *Interactive Server* or *Interactive WebAssembly* and *Global* application.  Only go hybrid if you really knoiw what you are doing and have a deep understanding of components.
+Most people who came to old Blazor struggled with the component concept and were confused with the lifecycle and events.  Throwing in render modes adds another level of complexity. I can see so many scenarios where components are talking to the wrong instances or types of services.  Throw `Auto` to the mix and the complexity spirals out of control.  Think of the exotic concoctions people will come up, and then fail to debug!
 
-The one area where I can see I'll switch between WASM and Server is where I want to do high security stuff such as User log in and account management, but want to run the main UI in CSR.
+My recommendation is go with either *Interactive Server* or *Interactive WebAssembly* and *Global* application.
+
+I see only two use cases for the `InteractiveAuto` and `Per page/component` deployment:
+
+1. You're coming from a classic server side rendered application that has been migrated to Net8.0 and you want a phased migration to Blazor.
+   
+2. You want freedom to choose but don't have the knowledge to know how bad that decision will turn out
+
+Hopefully I've disuaded you from choosing this mode.  The design will be complex. You will spend a lot of time debugging.  You will find yourself in some very deep holes. 
+
 

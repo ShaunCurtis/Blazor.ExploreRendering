@@ -1,6 +1,6 @@
 using Blazor.ExploreRendering.Client.Pages;
 using Blazor.ExploreRendering.Components;
-using Blazr.RenderLogger.Server;
+using Blazr.RenderState.Server;
 using System.ComponentModel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.AddRenderStateServerServices();
+builder.AddBlazrRenderStateServerServices();
 
 var app = builder.Build();
 
