@@ -12,11 +12,11 @@ A word on acronyms and terminology.  I'll talk about three modes of rendering:
 2. **ASSR** - Active Server Side Rendering.  Blazor Server.
 3. **CSR** - Client Side Rendering.  Blazor WASM/Web Assembly.
 
-I'll use the acronyms through the rest of this article.
+I'll use these acronyms throughout the rest of this article.
 
 ## Create a Solution
 
-Create a solution using the *Blazor Web Project* with those settings.
+Create a solution using the *Blazor Web Project* with the *AutoInteractive* and *Per Page/Component* options.
 
 You get two projects: 
 
