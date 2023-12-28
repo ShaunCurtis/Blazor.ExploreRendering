@@ -28,7 +28,7 @@ Both of these are deployment projects: they create a deployable solution.
 
 ### Adding the RenderState to the Solution
 
-*RenderState* is a Nuget package that provides some infrastructure to log and display the render mode of components.  See [Blazr.RenderState Repo on GitHub](https://github.com/ShaunCurtis/Blazr.RenderState)
+The *RenderState* Nuget package provides some simple infrastructure to log and display the render mode of components.  See [Blazr.RenderState Repo on GitHub](https://github.com/ShaunCurtis/Blazr.RenderState)
 
 Add the following Nuget packages to the projects:
 
@@ -68,7 +68,7 @@ And add the following `using` to both project's `_Imports.razor`.
 
 ## The Pages/Components
 
-Look at the two projects and notice that most of the components are in the Server project.  Only  `Counter` is in Client Project.
+Note most of the components are in the Server project.  Only  `Counter` is in Client Project.
 
 Add the following component to `Home`, `Counter` and `Weather` below the `Page Title` :
 
@@ -152,7 +152,7 @@ And to `NavMenu` along with some extra navigation links:
 </div>
 ```
 
-Add the following pages to the *Server* project:
+Create some new pages to the *Server* project:
 
 *ASSR.razor*
 
@@ -221,7 +221,7 @@ Welcome to your new app.
 
 ### Run the Solution
 
-You will see this:
+You see this:
 
 ![Home Server Rendered](./../images/Home-ServerRendered.png)
 
@@ -231,9 +231,13 @@ You will see this:
 Parent Compoment Name => Unique ID of the Scoped Session Service => Render Mode of the Component
 ```
 
-Everything is SSSR.  Why?  
+## Behaviours
 
-Take alook at `App.razor`.  The two top level components have no render mode set.  They therefore use the default:  SSSR. Therefore both `Router` and  `Layout` are also statically rendered.
+Switch between components and noting the render modes and the Id's of the Scoped conponent.  You will find various combinations that confuse.  I'll look at a few and explain.
+
+### Everything is SSSR on the Home Page
+
+Review `App.razor`.  The two top level components have no render mode set: default is therefore SSSR.  `Routes` is rendered SSSR, so `Router` and  `Layout` are also statically rendered.
 
 ```csharp
 <!DOCTYPE html>
@@ -252,13 +256,53 @@ Take alook at `App.razor`.  The two top level components have no render mode set
 </html>
 ```
 
-Try setting the Render mode on the `MainLayout` or `RouteView`.  That generates the following rather confusing runtime exception:
+### Everything causes a full page refresh
+
+`App`, `Route`, `Router`, `MainLayout` are all SSSR as described above.  The router runs on the server so it can make the correct render mode decision.
+
+It's interesting to note that although you make a trip to the server to route between two client side pages, CSR => Counter for example, the client side Blazor session is maintained.  The same is the case with the server Hub sessions.
+
+### Different Components have different Scoped Session instances
+
+Go to *Mongrel* and note the different Service Id's.
+
+ - *Pre-Rendered* SSSR components all have the same ID.  This is the scoped service created for the lifetime of the Http Request.  Every page request creates a new *Scoped* container and *Scoped* services.
+  
+ - The SSR service is alive in the Blazor Hub session running on the server.  It's lifetime is scoped to the SPA session.  All SSSR components share this service instance.
+  
+ - The CSR service is alive in the Blazor SPA session running in the Web Assembly container on the Browser.  It's a different instance from the SSR instance.
+
+ - The Auto component has rendered in CSR mode, so has the CST service instance.
+
+Consider how this complicates application design.  How does a ASSR render component and a CSR component use the same notification service?  How do they share data?
+
+SSSR and ASSR share the same *Singleton* service, but ASSR and CSR have different instances.  They are totally separate applications.
+
+Blazor does provide a mechanism for passing pre-render data to active components, but doesn't help much.
+
+### InteractiveAuto Pages don't always render in the same mode
+
+Go to *Home* and then to *Counter*.  *Counter* renders in CSR mode with the CSR service instance.
+
+Now go to *ASSR* and then back to *Counter*.  It's now rendered in ASSR mode, and uses the Blazor Hub service instance.
+
+Consider saving the state of the counter in a service.  You get different states depending on the render mode.
+
+### I can't set the RenderMode on Layouts
+
+`Layouts` would be a great place to set the render mode for a group of pages.
+
+Set the Render mode on the `MainLayout` or `RouteView`.
+
+You will get the following rather confusing runtime exception:
 
 ![Render Fragment Exception](./../images/RenderFragment-exception.png)
 
-You can't set the render mode on a Layout or the `RouteView` component within `Routes`, so you either set up at the top in `App` or you set it on the pages or lower level components.
+You either set it at the top in `App` or individually on the pages or lower level components.
 
-What that basically means is you can't set the a rendermode on a component that accepts render fragments from another component with a different rendermode.  In this case `Body` from it's statically rendered parent.  In most cases this is `ChildContent`.
+But why not?
+
+You can't set the rendermode on a component that defines one or more `RenderFragment` Parameters.  *Layouts* define `Body`.  In most cases it's `ChildContent`.
 
 Consider this simple case:
 
@@ -274,58 +318,29 @@ Consider this simple case:
 }
 ```
 
-`@_helloWorld` is a render fragment passed to `MyDiv` as the `ChildContent` Parameter.  But the parent is statically rendered so when the Blazor tries to render `MyDiv` interactively, `ChildContent` doesn't exist.  There's no `RenderFragment` `delegate` to pass.  Bang!
-
-## Behaviours
-
-Switch between components and noting the render modes and the Id's of the Scoped conponent.  You will find various combinations that confuse.  I'll look at a few and explain.
-
-### Everything causes a full page refresh
-
-`App`, `Route`, `Router`, `MainLayout` are all SSSR, so that's obvious once you analyse it properly.  The router runs on the server so it can make the correct decision how to render the commponent tree.
-
-It's interesting to note that although you make a trip to the server to route between two client side pages, CSR => Counter for example, the client side Blazor session is maintained
-
-### Different Components have different Scoped Session instances
-
-Go to *Mongrel* and note the different Service Id's.
-
- - The *Pre-Rendered* SSSR components all have the same ID.  This is the scoped service that was created for the Http Request.  This instance, and it's scoped container, no longer exist.
- - The SSR service is alive in the Blazor Hub session running on the server.  This has a scope of the SPA session.  All SSR components will share this service instance.
- - The CSR service is alive in the Blazor SPA session running in the Web Assembly container on the Browser.  This is a different instance from the SSR instance.
- - The Auto component has rendered as CSR, so has the CST service instance.
-
-Consider how this complicates designing an application.  How does a ASSR render component and a CSR component raise and receive event notifications?  How do they share data? 
-
-### InteractiveAuto Pages don't always render in the same mode
-
-Go to *Home* and then to *Counter*.  *Counter* renders in CSR mode with the CSR service instance.
-
-No go to *ASSR* and then back to *Counter*.  It's noe registered in ASSR mode and is using the Blazor Hub service instance.
-
-Consider saving the state of the counter in a service.  You get different states depending on the render mode.
+`@_helloWorld` is a render fragment owned by the parent and passed to `MyDiv` as the `ChildContent` Parameter.  The parent is statically rendered so it tries to serialize the data it sends to the child component.   A `RenderFragment` is a  `delegate` which can't be serialized, so Bang!
 
 ## This isn't a Single Page Application
 
-Blazor was conceived as a Singkle Page Application, running either in a Server Hub environment or in a Web Assembly environment in the Browser.  One Http request trip to the server to get the page, a few trips to get resources and the Application is up and running in the browser.  No more Http requests.
+Blazor was conceived as a Single Page Application, running either in a Server Hub environment or in a Web Assembly environment in the Browser.  An intial Http request trip to the server to get the page, a few side trips to get resources.  Run some JS and the application is up and running in the browser: no more Http requests.
 
-This hybrid mode is not that.  The Router runs on the server.  Every page request is a Http request to the server.  The layout is statically rendered.
+This hybrid isn't that.  The Router runs on the server.  Every page request is a Http request to the server.  The layout is statically rendered.
 
-Basically a static server rendered application on steriods.  What Microsoft have been trying to deliver for it's Asp.Net, Razor, MVC customer base for years!
+Basically a static server rendered application with a JS front end.  I hesitate to say this but: What Microsoft have been trying to deliver for it's Asp.Net, Razor, MVC customer base for years!
 
 If you want old Blazor [seems quite a strange statement to make for a new technology], choose one of the pure modes with `Global` interactivity.
 
 ## More to Come
 
-I'll add some more detail as I do more work on this.
+I'll add some more detail as I discover new wrinkles.
 
 ## My Personal Initial Conclusions and Observations
 
 > Note these are personal views and opinions.
 
-My gut feeling is that using **Per Page/Component** mode is not hybrid, it's mongrel: hense the title of the article.
+My gut feeling is that using **Per Page/Component** mode isn't hybrid, it's a mongrel.
 
-Most people who came to old Blazor struggled with the component concept and were confused with the lifecycle and events.  Throwing in render modes adds another level of complexity. I can see so many scenarios where components are talking to the wrong instances or types of services.  Throw `Auto` to the mix and the complexity spirals out of control.  Think of the exotic concoctions people will come up, and then fail to debug!
+Most who came to old Blazor struggled with the component concept and were confused with the lifecycle and events.  Throwing in render modes adds another level of complexity. I can see so many scenarios where components are talking to the wrong instances or types of services.  Throw `Auto` to the mix and the complexity spirals [out of control].  Think of the exotic concoctions and black holes people will come up!
 
 My recommendation is go with either *Interactive Server* or *Interactive WebAssembly* and *Global* application.
 
@@ -333,8 +348,8 @@ I see only two use cases for the `InteractiveAuto` and `Per page/component` depl
 
 1. You're coming from a classic server side rendered application that has been migrated to Net8.0 and you want a phased migration to Blazor.
    
-2. You want freedom to choose but don't have the knowledge to know how bad that decision will turn out
+2. You want freedom to choose but don't have the knowledge to know how bad that decision will turn out.
 
-Hopefully I've disuaded you from choosing this mode.  The design will be complex. You will spend a lot of time debugging.  You will find yourself in some very deep holes. 
+Hopefully I've disuaded you from choosing the second option.  The design will be complex. You will spend a lot of time debugging.  You will find yourself in some very deep dark holes. 
 
 
