@@ -4,7 +4,7 @@ This repository is my knowledge store on the new Blazor Render Modes.  It's orga
 
 This is Blazor, but not as we pre Net8 developers knew it.
 
-Everything is either unfinished or unpolished and contain some personal views on some of the things I've discovered.
+Everything is either unfinished or unpolished and contains some personal views on some of the wrinkles I've found.
 
 Articles so Far:
 
