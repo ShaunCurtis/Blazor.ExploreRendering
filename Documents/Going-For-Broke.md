@@ -1,10 +1,8 @@
 # Going For Broke
 
-> This is an early draft.  I've made it available as there are lots of questions on Stack Overflow and other forums on the topic.
+There's a honeypot in the Blazor Web App template : *InteractiveAuto* with Interactivity set for *Per Page/Component*.  Almost everyone new to Blazor goes for it. The full works, freedom to choose.  The problem is you're unaware of the consequences of that decision.  It's not your fault, it's Microsoft's, for putting the honeypot there in the first place, and for not giving it a serious government health warning. 
 
-Everyone's favourite seems to be *AutoInteractive* and *Per Page/Component*.  The full works, freedom to choose.
-
-In this article I'll take a look at how this template option works, discuss  design and deployment issues and explain what I believe are the only two use cases for choosing this *modus operandi*.
+In this post I'll take a look at how this template option works, discuss  design and deployment issues and explain what I believe are the only two use cases for choosing this *modus operandi*.
 
 A word on acronyms and terminology.  I'll talk about three modes of rendering:
 
@@ -26,7 +24,7 @@ You get two projects:
 Both of these are deployment projects: they create a deployable solution.
 
 
-### Adding the RenderState to the Solution
+### Adding RenderState to the Solution
 
 The *RenderState* Nuget package provides some simple infrastructure to log and display the render mode of components.  See [Blazr.RenderState Repo on GitHub](https://github.com/ShaunCurtis/Blazr.RenderState)
 
