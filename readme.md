@@ -1,6 +1,6 @@
 # Exploring Render Modes
 
-This repository is my knowledge store on the new Blazor Render Modes.  It's organized as a collection of notes and projects.  You need to change the StsrtUp project to run the different setups. 
+This repository is my knowledge store on the new Blazor Render Modes.  It's organized as a collection of notes and projects.  You need to change the StartUp project to run the different setups. 
 
 This is Blazor, but not as we pre Net8 developers knew it.
 
